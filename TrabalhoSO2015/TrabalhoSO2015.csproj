@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="MVC\ArquivoBLL.cs" />
     <Compile Include="MVC\ArquivoDAO.cs" />
-    <Compile Include="MVC\RelatorioDAL.cs" />
+    <Compile Include="MVC\Relatorio.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,10 +8,11 @@ namespace TrabalhoSO2015
 {
     class Program
     {
-        public static bool debug = true;  
+        public static bool debug = true;
 
         static void Main(string[] args)
         {
+            Relatorio relatorio = new Relatorio();
             string caminho = @"C:\Users\Marcus\Desktop\Arquivo.txt";
             ArquivoBLL arquivoBLL = new ArquivoBLL();
 
@@ -25,10 +26,12 @@ namespace TrabalhoSO2015
             switch(opcao)
             {
                 case 1:
-                    Relatorio relatorio = arquivoBLL.lerArquivo(caminho);
-                    break;
+                        relatorio = arquivoBLL.lerArquivo(caminho);
+                break;
             }
 
+            Console.WriteLine("#------------------RELATORIO------------------#");
+            Console.WriteLine(relatorio.relatorio());
             Console.ReadKey();
         }
 

@@ -70,7 +70,7 @@ namespace TrabalhoSO2015
                                 posV = 0;
                                 continue;
                             }
-
+                            relatorioDAL.Falta++;
                             posV++;
                         }
                     }                    

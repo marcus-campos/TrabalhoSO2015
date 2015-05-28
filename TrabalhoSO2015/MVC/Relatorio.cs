@@ -12,8 +12,9 @@ namespace TrabalhoSO2015
         private int[] substituido = new int[10];
         private int maisVendido = 0;
         private int menosVendido = 0;
+        private int falta = 0;
 
-
+        
         #region Encapsuladores
         public int[] Produtos
         {
@@ -38,6 +39,12 @@ namespace TrabalhoSO2015
             get { return menosVendido; }
             set { menosVendido = value; }
         }
+
+        public int Falta
+        {
+            get { return falta; }
+            set { falta = value; }
+        }
         #endregion
 
 
@@ -51,8 +58,19 @@ namespace TrabalhoSO2015
 
                 if (produtos[x] == produtos.Min()) //Verifica o menor valor
                     menosVendido = x;
-
             }
+        }
+
+        public string relatorio()
+        {
+            string relatorio = "";
+            mmVendidos();
+
+            relatorio += "Produto mais vendido:"+maisVendido+"\n";
+            relatorio += "Produto menos vendido:" + menosVendido + "\n";
+            relatorio += "Faltas de produtos na prateleira:" + falta + "\n";
+
+            return relatorio;
         }
     }
 }
