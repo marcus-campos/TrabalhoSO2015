@@ -8,7 +8,8 @@ namespace TrabalhoSO2015
 {
     class Program
     {
-       
+        public static bool debug = true;  
+
         static void Main(string[] args)
         {
             string caminho = @"C:\Users\Marcus\Desktop\Arquivo.txt";
@@ -24,7 +25,7 @@ namespace TrabalhoSO2015
             switch(opcao)
             {
                 case 1:
-                    RelatorioDAL relatorio = arquivoBLL.lerArquivo(caminho);
+                    Relatorio relatorio = arquivoBLL.lerArquivo(caminho);
                     break;
             }
 

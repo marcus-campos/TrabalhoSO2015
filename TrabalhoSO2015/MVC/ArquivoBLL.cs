@@ -8,7 +8,7 @@ namespace TrabalhoSO2015
 {
     class ArquivoBLL
     {
-        public RelatorioDAL lerArquivo(string caminho)
+        public Relatorio lerArquivo(string caminho)
         {
             ArquivoDAO arquivoDAO = new ArquivoDAO();
             //return null;

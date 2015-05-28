@@ -10,12 +10,12 @@ namespace TrabalhoSO2015
     class ArquivoDAO
     {
         int[] prateleira;
-        RelatorioDAL relatorioDAL;
+        Relatorio relatorioDAL;
 
-        public RelatorioDAL LerArquivo(string caminho)
+        public Relatorio LerArquivo(string caminho)
         {
             StreamReader strR = new StreamReader(caminho);
-            relatorioDAL = new RelatorioDAL();
+            relatorioDAL = new Relatorio();
 
             string texto = "";
             string txtLine = null;
@@ -34,7 +34,8 @@ namespace TrabalhoSO2015
 
         public void Fifo(string linha, int pos)
         {
-            int posV = 0;        
+            int posV = 0;
+            bool existe = false;
 
             if(pos == 0)
                 prateleira = new int [int.Parse(linha)];
@@ -42,36 +43,49 @@ namespace TrabalhoSO2015
                 if(linha != null)
                 foreach(char c in linha.ToCharArray())
                 {
-                    if (prateleira != null)
-                        uiFila(posV);
+                   
+
+                    if (prateleira != null && Program.debug == true)
+                        uiFila(pos,posV);
                     if(c != char.Parse("."))
                     {
-                        if(prateleira[posV] != null)
-                             relatorioDAL.Substituido[posV] = prateleira[posV];
-
-                        prateleira[posV] = int.Parse(c.ToString());
-                        relatorioDAL.Produtos[posV]++;
-                        
-                        if (posV + 1 == prateleira.Length)
+                        for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
                         {
-                            posV = 0;
-                            continue;
+                            if (prateleira[z] == c)
+                            {
+                                existe = true;
+                            }
                         }
 
-                        posV++;
+                        if (existe == false)
+                        {
+                            if (prateleira[posV] != null)
+                                relatorioDAL.Substituido[posV] = prateleira[posV];
+
+                            prateleira[posV] = int.Parse(c.ToString());
+                            relatorioDAL.Produtos[posV]++;
+
+                            if (posV + 1 == prateleira.Length)
+                            {
+                                posV = 0;
+                                continue;
+                            }
+
+                            posV++;
+                        }
                     }                    
                 }
             
         }
 
-        public void uiFila(int pos)
+        public void uiFila(int pos, int posV)
         {
             string visualFila = "";
             for(int i = 0; i < prateleira.Length; i++)
             {
                 visualFila += "[ "+prateleira[i]+" ] ";
             }
-            Console.WriteLine("Ciclo "+ pos + ": " + visualFila);
+            Console.WriteLine("Linha: " +pos+ " ciclo " + (posV + 1) + ": " + visualFila);
         }
     }
 }
