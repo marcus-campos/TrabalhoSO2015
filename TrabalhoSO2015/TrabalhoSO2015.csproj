@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MVC\ArquivoBLL.cs" />
+    <Compile Include="MVC\ArquivoDAL.cs" />
     <Compile Include="MVC\ArquivoDAO.cs" />
     <Compile Include="MVC\Relatorio.cs" />
     <Compile Include="Program.cs" />

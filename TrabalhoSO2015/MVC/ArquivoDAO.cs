@@ -10,7 +10,10 @@ namespace TrabalhoSO2015
     class ArquivoDAO
     {
         int[] prateleira;
+        ArquivoDAL arquivoDAL = new ArquivoDAL();
         Relatorio relatorioDAL;
+
+        
 
         public Relatorio LerArquivo(string caminho)
         {
@@ -43,8 +46,6 @@ namespace TrabalhoSO2015
                 if(linha != null)
                 foreach(char c in linha.ToCharArray())
                 {
-                   
-
                     if (prateleira != null && Program.debug == true)
                         uiFila(pos,posV);
                     if(c != char.Parse("."))
@@ -60,7 +61,7 @@ namespace TrabalhoSO2015
                         if (existe == false)
                         {
                             if (prateleira[posV] != null)
-                                relatorioDAL.Substituido[posV] = prateleira[posV];
+                                relatorioDAL.Substituido[posV]++;
 
                             prateleira[posV] = int.Parse(c.ToString());
                             relatorioDAL.Produtos[posV]++;
@@ -80,10 +81,11 @@ namespace TrabalhoSO2015
 
         public void uiFila(int pos, int posV)
         {
+            
             string visualFila = "";
             for(int i = 0; i < prateleira.Length; i++)
-            {
-                visualFila += "[ "+prateleira[i]+" ] ";
+            {                
+                visualFila += "[ "+arquivoDAL.Produto[i]+" ] ";
             }
             Console.WriteLine("Linha: " +pos+ " ciclo " + (posV + 1) + ": " + visualFila);
         }

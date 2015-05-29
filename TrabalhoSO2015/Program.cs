@@ -30,7 +30,7 @@ namespace TrabalhoSO2015
                 break;
             }
 
-            Console.WriteLine("#------------------RELATORIO------------------#");
+            Console.WriteLine("#------------------RELATORIO------------------#\n");
             Console.WriteLine(relatorio.relatorio());
             Console.ReadKey();
         }

@@ -13,7 +13,6 @@ namespace TrabalhoSO2015
         private int maisVendido = 0;
         private int menosVendido = 0;
         private int falta = 0;
-
         
         #region Encapsuladores
         public int[] Produtos
@@ -63,12 +62,22 @@ namespace TrabalhoSO2015
 
         public string relatorio()
         {
+            ArquivoDAL arquivoDAL = new ArquivoDAL();
             string relatorio = "";
+            int totalSubstituidos = 0;
             mmVendidos();
 
-            relatorio += "Produto mais vendido:"+maisVendido+"\n";
-            relatorio += "Produto menos vendido:" + menosVendido + "\n";
+            relatorio += "Produto mais vendido com " + produtos.Max() +" vendas:" + arquivoDAL.Produto[maisVendido] + "\n";
+            relatorio += "Produto menos vendido com " + produtos.Min() +" vendas:"+ arquivoDAL.Produto[menosVendido] + "\n";
             relatorio += "Faltas de produtos na prateleira:" + falta + "\n";
+            relatorio += "\nNumero de vezes que cada Produto foi substitudo:\n";
+
+            for (int x = 0; x < 10; x++)
+            {
+                totalSubstituidos += substituido[x];
+                relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + substituido[x] +"\n";
+            }
+            relatorio += "Total: " +totalSubstituidos;
 
             return relatorio;
         }
