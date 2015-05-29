@@ -8,11 +8,11 @@ namespace TrabalhoSO2015
 {
     class ArquivoBLL
     {
-        public Relatorio lerArquivo(string caminho)
+        public Relatorio lerArquivo(string caminho, int algoritimo)
         {
             ArquivoDAO arquivoDAO = new ArquivoDAO();
             //return null;
-            return arquivoDAO.LerArquivo(caminho);
+            return arquivoDAO.LerArquivo(caminho, algoritimo);
         }        
     }
 }

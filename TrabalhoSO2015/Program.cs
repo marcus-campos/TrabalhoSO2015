@@ -18,15 +18,17 @@ namespace TrabalhoSO2015
 
             //Console.Write("Digite o caminho do arquivo: ");
             //caminho = Console.ReadLine().Replace(@"/", "//");
-            
-
-            Console.Write("<Menu> \n\n01: FIFO.\nOpção: ");
+         
+            Console.Write("<Menu> \n\n01: FIFO.\n02: LRU.\nOpção: ");
             int opcao = int.Parse(Console.ReadLine());
 
             switch(opcao)
             {
                 case 1:
-                        relatorio = arquivoBLL.lerArquivo(caminho);
+                    relatorio = arquivoBLL.lerArquivo(caminho,1);
+                break;
+                case 2:
+                    relatorio = arquivoBLL.lerArquivo(caminho, 2);
                 break;
             }
 
@@ -34,9 +36,5 @@ namespace TrabalhoSO2015
             Console.WriteLine(relatorio.relatorio());
             Console.ReadKey();
         }
-
-      
-
-      
     }
 }

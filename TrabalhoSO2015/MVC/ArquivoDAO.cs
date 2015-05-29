@@ -10,6 +10,7 @@ namespace TrabalhoSO2015
     class ArquivoDAO
     {
         int[] prateleira;
+        int[] filaImaginaria;
         ArquivoDAL arquivoDAL = new ArquivoDAL();
         Relatorio relatorioDAL;
         int posV = 0;
@@ -17,7 +18,7 @@ namespace TrabalhoSO2015
 
         
 
-        public Relatorio LerArquivo(string caminho)
+        public Relatorio LerArquivo(string caminho, int algoritimo)
         {
             StreamReader strR = new StreamReader(caminho);
             relatorioDAL = new Relatorio();
@@ -27,8 +28,21 @@ namespace TrabalhoSO2015
             
             do
             {
-                txtLine = strR.ReadLine();               
-                Fifo(txtLine, cont);
+                txtLine = strR.ReadLine();     
+                switch(algoritimo)
+                {
+                    case 1:
+                        Fifo(txtLine, cont);
+                        break;
+                    case 2:
+                        LRU(txtLine, cont);
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+                }
+               
                 texto += txtLine;
                 cont++;
             }
@@ -37,11 +51,8 @@ namespace TrabalhoSO2015
             return relatorioDAL;
         }
 
-        public void Fifo(string linha, int pos)
+        public void Fifo(string linha, int pos) //First IN first OUT
         {
-            
-            
-
             if (pos == 0)
             {
                 prateleira = new int[int.Parse(linha)];
@@ -73,19 +84,19 @@ namespace TrabalhoSO2015
                             
                             if (existe == false)
                             {
-                                //if (prateleira[posV] != null)
-                                // relatorioDAL.Substituido[posV]++;
+                                if (prateleira[posV] != null)
+                                 relatorioDAL.Substituido[posV]++;
 
                                 prateleira[posV] = valorAtual;
                                 relatorioDAL.Produtos[valorAtual]++;
-
-                                if (posV + 1 == prateleira.Length)
-                                {
-                                    posV = 0;
-                                    continue;
-                                }
                                 relatorioDAL.Falta++;
-                                posV++;
+
+                                if (posV + 1 == prateleira.Length) //Verifica se chegou ao final da fila
+                                {
+                                    posV = 0; //Volta ao inicio da fila, ou seja, no primeiro que entrou
+                                    continue; //Pula a proxima etapa e reinicia o foreach
+                                }                               
+                                posV++;//Muda o seletor para o proximo da fila
                             }
                             else
                             {
@@ -96,15 +107,113 @@ namespace TrabalhoSO2015
             
         }
 
-        public void uiFila(int pos, int posV)
+        
+
+        public void LRU(string linha, int pos)
         {
-            
+            if (pos == 0)//Verifica se e a primeira linha
+            {
+                prateleira = new int[int.Parse(linha)]; //Adiciona o tamanho da prateleira
+                filaImaginaria = new int[int.Parse(linha)];//Adiciona o mesmo tamanho da prateleira no vetor imaginario
+                //relatorioDAL.Falta = int.Parse(linha);
+            }
+            else
+                if (linha != null) //Verifica se a linha nao esta vazia
+                    foreach (char c in linha.ToCharArray()) //Estrutura para percorrer caractere por caractere da linha
+                    {
+                        bool existe = false; //Variavel para verificacoes futuras se existe o elemento que sera adicionado a prateleira
+                        int valorAtual; //Valor do caractere atual
+
+                        if (prateleira != null && Program.debug == true) //Mostra os LOGS
+                        {
+                            uiFila(pos, posV);
+                            iuiFila(pos, posV);
+                        }
+
+
+                        if (c != char.Parse(".")) //Verifica se o caractere atual nao e um ponto
+                        {
+                            valorAtual = int.Parse(c.ToString());
+
+                            for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
+                            {
+                                if (prateleira[z] == int.Parse(c.ToString())) //Se o valor da prateleira na posicao Z for igual ao caractere atual
+                                {
+                                    existe = true; //Muda o valor da variavel existe para true
+                                }                                
+                            }
+
+
+                            if (existe == false) //Se o caractere atual nao existir na prateleira
+                            {
+                                if (prateleira[posV] != null)
+                                    relatorioDAL.Substituido[posV]++; //Contabiliza os produtos substituidos
+
+                                //prateleira[posV] = valorAtual;
+                                for (int v = 0; v < prateleira.Length; v++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
+                                {
+                                    int[] copiaFila = new int[prateleira.Length];
+                                    filaImaginaria.CopyTo(copiaFila, 0); //Clona a fila imaginaria
+
+                                    if (prateleira[v] == filaImaginaria[(prateleira.Length - 1)]) //Se o valor da prateleira na posicao atual for igual ao valor que devera sair da fila imaginaria
+                                    {
+                                        prateleira[v] = valorAtual;//Adicina o caractere atual a prateleira                      
+               
+                                        filaImaginaria[0] = int.Parse(c.ToString()); //Adiciona o caractere ao primeiro da fila
+                                      
+                                        for(int n = 0; n < (filaImaginaria.Length - 1); n++) //Realoca todos o restante da fila
+                                        {                                            
+                                            filaImaginaria[n + 1] = copiaFila[n];
+                                        }
+                                        break;
+                                    }
+                                   
+                                }
+
+                                relatorioDAL.Produtos[valorAtual]++;
+                                relatorioDAL.Falta++;
+                                
+                                if (posV + 1 == prateleira.Length) //Verifica se chegou ao final da fila
+                                {
+                                    posV = 0; //Volta ao inicio da fila, ou seja, no primeiro que entrou
+                                    continue; //Pula a proxima etapa e reinicia o foreach
+                                }
+                                posV++;//Muda o seletor para o proximo da fila
+                            }
+                            else
+                            {
+                                relatorioDAL.Produtos[valorAtual]++;
+                            }
+                        }
+                    }
+
+        }
+
+        public void uiFila(int pos, int posV) //Prateleira
+        {            
             string visualFila = "";
             for(int i = 0; i < prateleira.Length; i++)
             {                
-                visualFila += "[ "+prateleira[i]+" ] ";
+                if(posV != i)                    
+                    visualFila += "[ "+prateleira[i]+" ] ";
+                else
+                    visualFila += "{[" + prateleira[i] + "]} ";
             }
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Linha: " +pos+ " ciclo " + (posV + 1) + ": " + visualFila);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void iuiFila(int pos, int posV) //Fila Imaginaria
+        {
+            string visualFila = "";
+            for (int i = 0; i < filaImaginaria.Length; i++)
+            {            
+                 visualFila += "[ " + filaImaginaria[i] + " ] ";                
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Linha: " + pos + " ciclo " + (posV + 1) + ": " + visualFila);
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

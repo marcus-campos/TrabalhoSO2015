@@ -75,9 +75,31 @@ namespace TrabalhoSO2015
             for (int x = 0; x < 10; x++)
             {
                 totalSubstituidos += substituido[x];
-                relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + substituido[x] +"\n";
+                relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + substituido[x] + "\n";                
             }
             relatorio += "Total: " +totalSubstituidos;
+
+            if(Program.debug == true)
+            {
+                relatorio += "\n\nVenda por produto:\n";
+
+                for (int x = 0; x < 10; x++)
+                {                   
+                    relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + produtos[x]  + "\n";                    
+                }
+                relatorio += "Total: " + produtos.Sum();
+            }
+
+            relatorio += "\n\nMedia de vendas de cada produto:\n";
+
+            for (int x = 0; x < 10; x++)
+            {
+                if(produtos[x] > 0)
+                    relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + produtos[x] / 2.000 + "\n";
+                else
+                    relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + produtos[x] + "\n";
+            }
+            relatorio += "Total: " + produtos.Sum();
 
             return relatorio;
         }
