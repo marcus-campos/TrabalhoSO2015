@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Autores: Marcus Vinicius Campos e Pedro Henrique Lima Pinheiro
+ * GitHub: https://github.com/marcus210/TrabalhoSO2015/
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

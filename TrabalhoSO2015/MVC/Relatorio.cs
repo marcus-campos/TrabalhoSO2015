@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Autores: Marcus Vinicius Campos e Pedro Henrique Lima Pinheiro
+ * GitHub: https://github.com/marcus210/TrabalhoSO2015/
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +17,12 @@ namespace TrabalhoSO2015
         private int maisVendido = 0;
         private int menosVendido = 0;
         private int falta = 0;
+        //private double medEntrada;
+        private double numTotalCaracteres;
+
         
         #region Encapsuladores
+
         public int[] Produtos
         {
             get { return produtos; }
@@ -44,6 +52,19 @@ namespace TrabalhoSO2015
             get { return falta; }
             set { falta = value; }
         }
+
+        /*public double MedEntrada
+        {
+            get { return medEntrada; }
+            set { medEntrada = value; }
+        }*/
+
+        public double NumTotalCaracteres
+        {
+            get { return numTotalCaracteres; }
+            set { numTotalCaracteres = value; }
+        }
+
         #endregion
 
 
@@ -60,6 +81,11 @@ namespace TrabalhoSO2015
             }
         }
 
+        public double intervaloMedio()
+        {
+            return numTotalCaracteres / produtos.Sum();
+        }
+
         public string relatorio()
         {
             ArquivoDAL arquivoDAL = new ArquivoDAL();
@@ -70,6 +96,7 @@ namespace TrabalhoSO2015
             relatorio += "Produto mais vendido com " + produtos.Max() +" vendas:" + arquivoDAL.Produto[maisVendido] + "\n";
             relatorio += "Produto menos vendido com " + produtos.Min() +" vendas:"+ arquivoDAL.Produto[menosVendido] + "\n";
             relatorio += "Faltas de produtos na prateleira:" + falta + "\n";
+            relatorio += "Intervalo medio: " + intervaloMedio() + "\n";
             relatorio += "\nNumero de vezes que cada Produto foi substitudo:\n";
 
             for (int x = 0; x < 10; x++)
@@ -100,6 +127,7 @@ namespace TrabalhoSO2015
                     relatorio += "   Produto " + arquivoDAL.Produto[x] + ": " + produtos[x] + "\n";
             }
             relatorio += "Total: " + produtos.Sum();
+            
 
             return relatorio;
         }

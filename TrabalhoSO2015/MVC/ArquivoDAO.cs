@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Autores: Marcus Vinicius Campos e Pedro Henrique Lima Pinheiro
+ * GitHub: https://github.com/marcus210/TrabalhoSO2015/
+ */
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,8 +19,10 @@ namespace TrabalhoSO2015
         Relatorio relatorioDAL;
         int posV = 0;
         int cont = 0;
-
-        
+        int[] bitAssoc;
+        bool execF = false;
+        int dotCont = 0;
+       
 
         public Relatorio LerArquivo(string caminho, int algoritimo)
         {
@@ -38,16 +44,18 @@ namespace TrabalhoSO2015
                         LRU(txtLine, cont);
                         break;
                     case 3:
+                        SC(txtLine, cont);
                         break;
                     default:
                         break;
                 }
-               
+
+                
                 texto += txtLine;
                 cont++;
             }
-            while (txtLine != null);          
-
+            while (txtLine != null);
+            relatorioDAL.NumTotalCaracteres += texto.Length;
             return relatorioDAL;
         }
 
@@ -105,9 +113,7 @@ namespace TrabalhoSO2015
                         }
                     }
             
-        }
-
-        
+        }      
 
         public void LRU(string linha, int pos)
         {
@@ -185,6 +191,93 @@ namespace TrabalhoSO2015
                                 relatorioDAL.Produtos[valorAtual]++;
                             }
                         }
+                    }
+        }
+
+        public void SC(string linha, int pos)
+        {
+            if (pos == 0)//Verifica se e a primeira linha
+            {
+                prateleira = new int[int.Parse(linha)]; //Adiciona o tamanho da prateleira
+                filaImaginaria = new int[int.Parse(linha)];//Adiciona o mesmo tamanho da prateleira no vetor imaginario
+                //relatorioDAL.Falta = int.Parse(linha);
+            }
+            else
+                if (linha != null) //Verifica se a linha nao esta vazia
+                    foreach (char c in linha.ToCharArray()) //Estrutura para percorrer caractere por caractere da linha
+                    {
+                        bool existe = false; //Variavel para verificacoes futuras se existe o elemento que sera adicionado a prateleira
+                        int valorAtual; //Valor do caractere atual
+
+                        if (prateleira != null && Program.debug == true) //Mostra os LOGS
+                        {
+                            uiFila(pos, posV);
+                            iuiFila(pos, posV);
+                        }
+                        
+                        if (c != char.Parse(".")) //Verifica se o caractere atual nao e um ponto
+                        {
+                            valorAtual = int.Parse(c.ToString());
+
+                            for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
+                            {
+                                if (prateleira[z] == int.Parse(c.ToString())) //Se o valor da prateleira na posicao Z for igual ao caractere atual
+                                {
+                                    existe = true; //Muda o valor da variavel existe para true
+                                }
+                            }
+                            
+                            if (existe == false) //Se o caractere atual nao existir na prateleira
+                            {
+                                if (prateleira[posV] != null)
+                                    relatorioDAL.Substituido[posV]++; //Contabiliza os produtos substituidos
+                                
+                                int[] copiaFila = new int[prateleira.Length];
+                                filaImaginaria.CopyTo(copiaFila, 0); //Clona a fila imaginaria
+
+                                if(prateleira[posV] == valorAtual && filaImaginaria[posV] == 0)
+                                {
+                                    filaImaginaria[posV] = 1;  
+                                }
+
+                                if (filaImaginaria[posV] == 0) //Se o valor da prateleira na posicao atual for igual ao valor que devera sair da fila imaginaria
+                                {
+                                    prateleira[posV] = valorAtual;//Adicina o caractere atual a prateleira                      
+                                    filaImaginaria[posV] = 1;                                   
+                                }
+                                else
+                                {
+                                    filaImaginaria[posV] = 0;      
+                                }
+                                
+                                relatorioDAL.Produtos[valorAtual]++;
+                                relatorioDAL.Falta++;
+
+                                if (posV + 1 == prateleira.Length) //Verifica se chegou ao final da fila
+                                {
+                                    posV = 0; //Volta ao inicio da fila, ou seja, no primeiro que entrou
+                                    if (execF == false)
+                                    {
+                                        for (int t = 0; t < filaImaginaria.Length; t++)
+                                        {
+                                            filaImaginaria[t] = 0;
+                                        }
+                                        execF = true;
+                                    }
+                                        continue; //Pula a proxima etapa e reinicia o foreach
+                                }
+                                posV++;//Muda o seletor para o proximo da fila
+                            }
+                            else
+                            {
+                                relatorioDAL.Produtos[valorAtual]++;
+                            }
+                        }
+                        else
+                        {
+                            dotCont++;
+                        }
+                        
                     }
 
         }

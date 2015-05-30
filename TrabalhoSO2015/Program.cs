@@ -1,25 +1,43 @@
-﻿using System;
+﻿/*
+ * Autores: Marcus Vinicius Campos e Pedro Henrique Lima Pinheiro
+ * GitHub: https://github.com/marcus210/TrabalhoSO2015/
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TrabalhoSO2015
 {
     class Program
     {
-        public static bool debug = true;
+        public static bool debug = false;
 
         static void Main(string[] args)
         {
             Relatorio relatorio = new Relatorio();
-            string caminho = @"C:\Users\Marcus\Desktop\Arquivo.txt";
+            string caminho = "";
             ArquivoBLL arquivoBLL = new ArquivoBLL();
+            Console.Write("Ativar modo debug (S ou N)?  ");
+            if (Console.ReadLine().ToUpper() == "S")
+                debug = true;
+            else
+                debug = false;
 
-            //Console.Write("Digite o caminho do arquivo: ");
-            //caminho = Console.ReadLine().Replace(@"/", "//");
+            if (debug == false)
+            {
+                Console.Write("Digite o caminho do arquivo: ");
+                
+                caminho = Console.ReadLine().Replace(@"/", "//");
+            }
+            else
+            {
+                caminho = @"C:\Users\Marcus\Desktop\Arquivo.txt";
+            }
          
-            Console.Write("<Menu> \n\n01: FIFO.\n02: LRU.\nOpção: ");
+            Console.Write("<Menu> \n\n01: FIFO.\n02: LRU.\n03: Second chance\nOpção: ");
             int opcao = int.Parse(Console.ReadLine());
 
             switch(opcao)
@@ -29,6 +47,9 @@ namespace TrabalhoSO2015
                 break;
                 case 2:
                     relatorio = arquivoBLL.lerArquivo(caminho, 2);
+                break;
+                case 3:
+                    relatorio = arquivoBLL.lerArquivo(caminho, 3);
                 break;
             }
 
