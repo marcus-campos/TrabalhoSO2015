@@ -76,16 +76,31 @@ namespace TrabalhoSO2015
                             uiFila(pos, posV);
                         
 
-                        if (c != char.Parse("."))
+                        if (c != char.Parse(".") && c != null)
                         {
-                            valorAtual = int.Parse(c.ToString());
+                            try
+                            {
+                                valorAtual = int.Parse(c.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                                continue;
+                            }
 
 
                             for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
                             {
-                                if (prateleira[z] == int.Parse(c.ToString()))
+                                try
                                 {
-                                    existe = true;
+                                    if (prateleira[z] == int.Parse(c.ToString()))
+                                    {
+                                        existe = true;
+                                    }
+                                }
+                                catch(Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
                                 }
                             }
 
@@ -128,7 +143,7 @@ namespace TrabalhoSO2015
                     foreach (char c in linha.ToCharArray()) //Estrutura para percorrer caractere por caractere da linha
                     {
                         bool existe = false; //Variavel para verificacoes futuras se existe o elemento que sera adicionado a prateleira
-                        int valorAtual; //Valor do caractere atual
+                        int valorAtual = 0; //Valor do caractere atual
 
                         if (prateleira != null && Program.debug == true) //Mostra os LOGS
                         {
@@ -139,14 +154,21 @@ namespace TrabalhoSO2015
 
                         if (c != char.Parse(".")) //Verifica se o caractere atual nao e um ponto
                         {
-                            valorAtual = int.Parse(c.ToString());
-
-                            for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
+                            try
                             {
-                                if (prateleira[z] == int.Parse(c.ToString())) //Se o valor da prateleira na posicao Z for igual ao caractere atual
+                                valorAtual = int.Parse(c.ToString());
+
+                                for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
                                 {
-                                    existe = true; //Muda o valor da variavel existe para true
-                                }                                
+                                    if (prateleira[z] == int.Parse(c.ToString())) //Se o valor da prateleira na posicao Z for igual ao caractere atual
+                                    {
+                                        existe = true; //Muda o valor da variavel existe para true
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
                             }
 
 
@@ -158,20 +180,27 @@ namespace TrabalhoSO2015
                                 //prateleira[posV] = valorAtual;
                                 for (int v = 0; v < prateleira.Length; v++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
                                 {
-                                    int[] copiaFila = new int[prateleira.Length];
-                                    filaImaginaria.CopyTo(copiaFila, 0); //Clona a fila imaginaria
-
-                                    if (prateleira[v] == filaImaginaria[(prateleira.Length - 1)]) //Se o valor da prateleira na posicao atual for igual ao valor que devera sair da fila imaginaria
+                                    try
                                     {
-                                        prateleira[v] = valorAtual;//Adicina o caractere atual a prateleira                      
-               
-                                        filaImaginaria[0] = int.Parse(c.ToString()); //Adiciona o caractere ao primeiro da fila
-                                      
-                                        for(int n = 0; n < (filaImaginaria.Length - 1); n++) //Realoca todos o restante da fila
-                                        {                                            
-                                            filaImaginaria[n + 1] = copiaFila[n];
+                                        int[] copiaFila = new int[prateleira.Length];
+                                        filaImaginaria.CopyTo(copiaFila, 0); //Clona a fila imaginaria
+
+                                        if (prateleira[v] == filaImaginaria[(prateleira.Length - 1)]) //Se o valor da prateleira na posicao atual for igual ao valor que devera sair da fila imaginaria
+                                        {
+                                            prateleira[v] = valorAtual;//Adicina o caractere atual a prateleira                      
+
+                                            filaImaginaria[0] = int.Parse(c.ToString()); //Adiciona o caractere ao primeiro da fila
+
+                                            for (int n = 0; n < (filaImaginaria.Length - 1); n++) //Realoca todos o restante da fila
+                                            {
+                                                filaImaginaria[n + 1] = copiaFila[n];
+                                            }
+                                            break;
                                         }
-                                        break;
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
                                     }
                                    
                                 }
@@ -207,7 +236,7 @@ namespace TrabalhoSO2015
                     foreach (char c in linha.ToCharArray()) //Estrutura para percorrer caractere por caractere da linha
                     {
                         bool existe = false; //Variavel para verificacoes futuras se existe o elemento que sera adicionado a prateleira
-                        int valorAtual; //Valor do caractere atual
+                        int valorAtual = 0; //Valor do caractere atual
 
                         if (prateleira != null && Program.debug == true) //Mostra os LOGS
                         {
@@ -217,7 +246,15 @@ namespace TrabalhoSO2015
                         
                         if (c != char.Parse(".")) //Verifica se o caractere atual nao e um ponto
                         {
-                            valorAtual = int.Parse(c.ToString());
+                            try
+                            {
+                                valorAtual = int.Parse(c.ToString());
+                            }
+                            catch(Exception ex)
+                            {                                
+                                Console.WriteLine(ex.Message);
+                                continue;
+                            }
 
                             for (int z = 0; z < prateleira.Length; z++)//Percorre todo o vetor prateleira e verifica se o valor ja existe
                             {

@@ -29,8 +29,14 @@ namespace TrabalhoSO2015
             if (debug == false)
             {
                 Console.Write("Digite o caminho do arquivo: ");
-                
+               
                 caminho = Console.ReadLine().Replace(@"/", "//");
+                if(caminho == "")
+                {
+                    Console.WriteLine("Valor incorreto!!!");
+                    Console.ReadKey();                    
+                }
+
             }
             else
             {
@@ -38,7 +44,20 @@ namespace TrabalhoSO2015
             }
          
             Console.Write("<Menu> \n\n01: FIFO.\n02: LRU.\n03: Second chance\nOpção: ");
-            int opcao = int.Parse(Console.ReadLine());
+            string valorConsole = Console.ReadLine();
+            int opcao = 0;
+
+            if (valorConsole != "")
+            {
+                opcao = int.Parse(valorConsole);
+            }
+            else
+            {
+                Console.WriteLine("Valor incorreto!!!");
+                Console.ReadKey();
+                Application.Exit();
+            }
+
 
             switch(opcao)
             {
